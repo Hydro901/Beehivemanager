@@ -11,8 +11,8 @@ import { BeehiveService } from './beehive.service';
 })
 export class AppComponent implements OnInit {
   public beehives: Beehive[] = [];
-  /* public editBeehive!: Beehive | null;
-  public deleteBeehive!: Beehive | null; */
+  public editBeehive!: Beehive | null;
+  public deleteBeehive!: Beehive | null;
 
   constructor(private beehiveService: BeehiveService) { }
 
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   }
 
 
-  /*  public onAddBeehive(addForm: NgForm): void{
+   public onAddBeehive(addForm: NgForm): void{
      document.getElementById('add-beehive-form')?.click();  
      this.beehiveService.addBeehive(addForm.value).subscribe(
        (response: Beehive) => {
@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
          alert(error.message);
        }
      );
-   } */
+   }
 
 
 
@@ -94,6 +94,7 @@ export class AppComponent implements OnInit {
 
 
   public onOpenModal(beehive: Beehive | null, mode: string): void {
+    debugger;
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
@@ -102,14 +103,14 @@ export class AppComponent implements OnInit {
     if (mode === 'add') {
       button.setAttribute('data-target', '#addBeehiveModal');
     }
-    /*  if (mode === 'edit'){
+     if (mode === 'edit'){
        this.editBeehive = beehive;
        button.setAttribute('data-target', '#updateBeehiveModal');
      }
      if (mode === 'delete'){
        this.deleteBeehive = beehive;
        button.setAttribute('data-target', '#deleteBeehiveModal');
-     } */
+     }
     container?.appendChild(button);
     button.click();
   }

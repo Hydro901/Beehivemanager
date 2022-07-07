@@ -28,10 +28,36 @@
 
 
 <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
-<div class="container" id= "main-container">
+<div class="container" id="main-container" >
     <div class="row">
         <div *ngFor= "let beehive of beehives" class="col-md-6 col-xl-3">
-         <app-beehive [arniaTest]= "beehive"></app-beehive>
+          <div class="card m-b-30" >
+            <div class="card-body row">
+                <div class="col-6">
+                    <a href=""><img src="https://media.istockphoto.com/vectors/no-image-available-sign-vector-id936182806?k=20&m=936182806&s=612x612&w=0&h=pTQbzaZhCTxWEDhnJlCS2gj65S926ABahbFCy5Np0jg=" alt="" class="img-fluid rounded-circle w-60"></a>
+                </div>
+                <div class="col-6 card-title align-self-center mb-0">
+                    <h5>{{beehive?.id}}-not show</h5>
+                    <p class="m-0">{{beehive?.model}}</p>
+                </div>
+            </div>
+            <ul class="list-group list-group-flush">
+        <!--                   <i class="fa-regular fa-bee"></i>
+        -->                    
+                <li class="list-group-item"><i class="fa fa-bee float-right"></i>Numero di telai: {{beehive?.nFrame}}</li>
+                <!-- <li class="list-group-item"><i class="fa fa-envelope float-right"></i>{{employee?.email}}</li> -->
+                <li class="list-group-item"><i type="button" class="fa fa-beer float-right"></i>Peso:  {{beehive?.weight}} Kg</li>
+                <li class="list-group-item"><i class="fa fa-tachometer float-right"></i>Temperatura:  {{beehive?.temperature}} °C</li>
+                <li class="list-group-item"><i class="fa fa-bug float-right"></i>Colonia:  {{beehive?.colony}}</li>
+                <li class="list-group-item"><i class="fa fa-leaf float-right"></i>Anno regina:  {{beehive?.queenYear}}</li>
+            </ul>
+            <div class="card-body">
+                <div class="float-right btn-group btn-group-sm">
+                    <a (click)="onOpenModal(beehive, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                    <a (click)="onOpenModal(beehive, 'delete')" class="btn btn-secondary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-times"></i></a>        
+                </div>
+            </div>
+        </div>
            
         </div> 
     </div>
@@ -46,3 +72,117 @@
    </div>
 
 
+<!-- Add Modal -->
+<div class="modal fade" id="addBeehiveModal" tabindex="-1" role="dialog" aria-labelledby="addBeehiveModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+       <div class="modal-header">
+          <h5 class="modal-title" id="addBeehiveModalLabel">Add Employee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          </button>
+       </div>
+       <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddBeehive(addForm)">
+          <div class="form-group">
+             <label for="model">Model</label>
+             <input type="text" ngModel name="model" class="form-control" id="model" placeholder="modello arnia" required>
+          </div>
+          <div class="form-group">
+             <label for="nFrame">Numero di Telai</label>
+             <input type="number" ngModel name="nFrame" class="form-control" id="nFrame" placeholder="numero di telai" required>
+          </div>
+          <div class="form-group">
+             <label for="weight">Peso Arnia</label>
+             <input type="number" ngModel name="weight" class="form-control" id="weight" placeholder="peso" required>
+          </div>
+          <div class="form-group">
+             <label for="temperature">Temperatura Interna</label>
+             <input type="number" ngModel name="temperature" class="form-control" id="temperature" placeholder="temperatura" required>
+          </div>
+          <div class="form-group">
+             <label for="colony">Specie Colonia</label>
+             <input type="text" ngModel name="colony" class="form-control" id="colony" placeholder="Colonia">
+          </div>
+          <div class="form-group">
+            <label for="queenYear">Anno della Regina</label>
+            <input type="number" ngModel name="queenYear" class="form-control" id="queenYear" placeholder="Anno della regina">
+         </div>
+          <div class="modal-footer">
+             <button type="button" id="add-beehive-form" class="btn btn-secondary" data-dismiss="modal">Close</button>
+             <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary" >Save changes</button>
+          </div>
+          </form>
+       </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Edit Modal -->
+<div class="modal fade" id="updateBeehiveModal" tabindex="-1" role="dialog" aria-labelledby="beehiveEditModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+     <div class="modal-content">
+        <div class="modal-header">
+           <h5 class="modal-title" id="updateBeehiveModalLabel">Edit Beehive {{editBeehive?.id}}</h5>
+           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+           </button>
+        </div>
+        <div class="modal-body">
+           <form #editForm="ngForm">
+              <div class="form-group">
+                 <label for="model">Model</label>
+                 <input type="text" ngModel="beehive.model" name="model" class="form-control" id="model" aria-describedby="emailHelp" placeholder="Modello Arnia">
+              </div>
+              <input type="hidden" ngModel="beehive.id" name="id" class="form-control" id="id" placeholder="Modello Arnia">
+              <div class="form-group">
+                 <label for="nFrame">Numero di Telai</label>
+                 <input type="number" ngModel="beehive.nFrame" name="nFrame" class="form-control" id="nFrame" placeholder="Numero di Telai">
+              </div>
+              <div class="form-group">
+                <label for="weight">Peso Arnia</label>
+                <input type="number" ngModel="beehive.weight" name="weight" class="form-control" id="weight" placeholder="peso">
+             </div>
+             <div class="form-group">
+              <label for="temperature">Temperatura Interna</label>
+              <input type="number" ngModel="beehive.temperature" name="temperature" class="form-control" id="temperature" placeholder="temperatura">
+             </div>
+             <div class="form-group">
+                <label for="colony">Specie Colonia</label>
+                <input type="text" ngModel="beehive.colony" name="colony" class="form-control" id="colony" placeholder="Colonia">
+             </div>
+             <div class="form-group">
+              <label for="queenYear">Anno della Regina</label>
+              <input type="number" ngModel="beehive.queenYear" name="queenYear" class="form-control" id="queenYear" placeholder="Anno della regina">
+             </div>
+              <div class="modal-footer">
+                 <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                 <button (click)= "onUpdateBeehive(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+              </div>
+           </form>
+        </div>
+     </div>
+  </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteBeehiveModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="deleteModelLabel">Delete Beehive</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>Are you sure you want to delete employee {{deleteBeehive?.model}}?</p>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+               <button (click)="onDeletBeehive(deleteBeehive!.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+            </div>
+         </div>
+      </div>
+   </div>
+ </div>
